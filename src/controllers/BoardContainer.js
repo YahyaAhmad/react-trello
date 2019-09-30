@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import pick from 'lodash/pick'
 import isEqual from 'lodash/isEqual'
 import Lane from './Lane'
-import { PopoverWrapper } from 'react-popopo'
+import {PopoverWrapper} from 'react-popopo'
 
 import * as boardActions from 'rt/actions/BoardActions'
 import * as laneActions from 'rt/actions/LaneActions'
@@ -187,14 +187,20 @@ class BoardContainer extends Component {
                   {...passthroughProps}
                 />
               )
-              return draggable && laneDraggable ? <Draggable key={lane.id}>{laneToRender}</Draggable> : laneToRender
+              return (draggable && laneDraggable) || lane.draggable ? (
+                <Draggable key={lane.id}>{laneToRender}</Draggable>
+              ) : (
+                laneToRender
+              )
             })}
           </Container>
         </PopoverWrapper>
         {canAddLanes && (
           <Container orientation="horizontal">
-            {editable && !addLaneMode ? <components.NewLaneSection t={t} onClick={this.showEditableLane} /> : (
-              addLaneMode && <components.NewLaneForm onCancel={this.hideEditableLane} onAdd={this.addNewLane} t={t}/>
+            {editable && !addLaneMode ? (
+              <components.NewLaneSection t={t} onClick={this.showEditableLane} />
+            ) : (
+              addLaneMode && <components.NewLaneForm onCancel={this.hideEditableLane} onAdd={this.addNewLane} t={t} />
             )}
           </Container>
         )}
@@ -236,11 +242,11 @@ BoardContainer.propTypes = {
   cardDragClass: PropTypes.string,
   laneDragClass: PropTypes.string,
   onCardMoveAcrossLanes: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired
 }
 
 BoardContainer.defaultProps = {
-  t: v=>v,
+  t: v => v,
   onDataChange: () => {},
   handleDragStart: () => {},
   handleDragEnd: () => {},
